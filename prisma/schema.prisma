@@ -1,0 +1,181 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  SEO_MANAGER
+  CONTENT_EDITOR
+  ANALYST
+  VIEWER
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ContentType {
+  BLOG
+  LEGAL
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  passwordHash   String
+  role           Role      @default(VIEWER)
+  assignedPillars String[]
+  is2FAEnabled   Boolean   @default(false)
+  totpSecret     String?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  auditLogs      AuditLog[]
+}
+
+model LotteryCategory {
+  id            String       @id @default(cuid())
+  name          String       @unique
+  slug          String       @unique
+  drawSchedule  Json
+  isActive      Boolean      @default(true)
+  predictions   Prediction[]
+  pillarPage    PillarPage?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Prediction {
+  id               String         @id @default(cuid())
+  lotteryCategory  LotteryCategory @relation(fields: [lotteryCategoryId], references: [id], onDelete: Cascade)
+  lotteryCategoryId String
+  drawDate         DateTime
+  mainNumbers      String[]
+  hotNumbers       String[]
+  coldNumbers      String[]
+  overdueNumbers   String[]
+  historyLogs      Json           @default("[]")
+  scientificNote   String?
+  status           PostStatus     @default(DRAFT)
+  publishedAt      DateTime?
+  scheduledFor     DateTime?
+  seo              PredictionSeo?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model PredictionSeo {
+  id              String     @id @default(cuid())
+  prediction      Prediction @relation(fields: [predictionId], references: [id], onDelete: Cascade)
+  predictionId    String     @unique
+  title           String
+  description     String
+  focusKeyphrase  String
+  canonicalUrl    String
+  seoScore        Int        @default(0)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model PillarPage {
+  id               String          @id @default(cuid())
+  lotteryCategory  LotteryCategory @relation(fields: [lotteryCategoryId], references: [id], onDelete: Cascade)
+  lotteryCategoryId String         @unique
+  layoutBlocks     Json            @default("[]")
+  seo              PillarPageSeo?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+model PillarPageSeo {
+  id            String     @id @default(cuid())
+  pillarPage    PillarPage @relation(fields: [pillarPageId], references: [id], onDelete: Cascade)
+  pillarPageId  String     @unique
+  title         String
+  description   String
+  focusKeyphrase String
+  canonicalUrl  String
+  seoScore      Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Post {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  content     Json        @default("{}")
+  contentType ContentType @default(BLOG)
+  status      PostStatus  @default(DRAFT)
+  publishedAt DateTime?
+  seo         PostSeo?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model PostSeo {
+  id             String   @id @default(cuid())
+  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId         String   @unique
+  title          String
+  description    String
+  focusKeyphrase String
+  canonicalUrl   String
+  seoScore       Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Expert {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  bio             String
+  avatarUrl       String?
+  credentials     String[]
+  authorityLinks  String[]
+  isApproved      Boolean  @default(false)
+  isVisible       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Redirect {
+  id              String   @id @default(cuid())
+  sourceUrl       String   @unique
+  destinationUrl  String
+  statusCode      Int      @default(301)
+  clicks          Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model SiteSettings {
+  id                String   @id @default(cuid())
+  key               String   @unique
+  value             Json
+  updatedAt         DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  entity    String
+  entityId  String
+  action    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
