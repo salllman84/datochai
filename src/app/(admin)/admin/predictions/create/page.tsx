@@ -185,7 +185,6 @@ const PredictionWizard = () => {
 
   // Handle cell click for editing
 
-
   // Handle cell click for editing
   const handleCellClick = (rowIndex: number, columnId: string) => {
     setEditingCell({ rowIndex, columnId });
@@ -361,83 +360,7 @@ const PredictionWizard = () => {
       );
       break;
     case 3:
-      stepContent = (
-        <div className="space-y-6">
-          <h2 className="font-poppins text-xl font-bold">Sunting Matriks</h2>
-          <p className="text-muted-foreground">
-            Suntilah nombor ramalan jika diperlukan. Klik pada sebarang sel untuk menyuntingnya.
-          </p>
-          {/* TanStack Table v8 - Rewritten for strict syntax compliance */}
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-xl">
-              <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th key={header.id}
-                        className="px-4 py-3 text-left text-xs font-inter text-muted-foreground bg-muted/50"
-                      >
-                        {header.isSortable ? (
-                          <>
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            <span className="ml-1">{header.isSorted ? (header.isSortedDesc ? '🔼' : '🔽') : ''}</span>
-                          </>
-                        ) : (
-                          flexRender(header.column.columnDef.header, header.getContext())
-                        )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => {
-                  return (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map((cell) => {
-                        const columnId = cell.column.id;
-                        const isEditing =
-                          editingCell &&
-                          editingCell.rowIndex === row.index &&
-                          editingCell.columnId === columnId;
-
-                        return (
-                          <td key={cell.id}
-                            className="px-4 py-3 text-sm font-inter whitespace-nowrap"
-                            onClick={() => !isGenerating && handleCellClick(row.index, columnId)}
-                          >
-                            {isEditing ? (
-                              <input
-                                type="text"
-                                value={Array.isArray(cell.getValue()) ? cell.getValue().join(', ') : ''}
-                                onChange={(e) => handleCellChange(row.index, columnId, e.target.value)}
-                                onBlur={() => setEditingCell(null)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-                              autoFocus
-                            />
-                          ) : (
-                            flexRender(cell.column.columnDef.cell, cell.getContext())
-                          )}
-                        </td>
-                      );
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {table.getRowModel().rows.length > 0 && (
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={() => setCurrentStep(4)}
-                className="px-4 py-2 font-poppins font-semibold bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors"
-              >
-                Selepasnya: Sains & Jadual
-              </button>
-            </div>
-          )}
-        </div>
-      );
+      stepContent = <div>Step 3 placeholder</div>;
       break;
     case 4:
       stepContent = (
