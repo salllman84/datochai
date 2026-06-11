@@ -1,109 +1,405 @@
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Custom color variables based on requirements */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
 
-  .animate-pulse-slow {
-    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
 
-  @keyframes pulse-slow {
-    0%, 100% {
-      opacity: 0.5;
-    }
-    50% {
-      opacity: 0.8;
-    }
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+
+  --radius: 0.5rem;
+
+  /* DatoChai specific colors from requirements */
+  --datochai-forest: #006400;
+  --datochai-gold: #D4AF37;
+  --datochai-crimson: #C8102E;
+  --datochai-nvidia-green: #76B900;
+  --datochai-background-light: #F8F9FA;
+  --datochai-background-dark: #0F172A;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+}
+
+/* DatoChai specific styles */
+.glassmorphism {
+  @apply bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-white/20 dark:border-slate-700/20 shadow-sm;
+}
+
+.hero-gradient {
+  @apply bg-gradient-radial from-[#006400] to-black;
+}
+
+.dark .hero-gradient {
+  @apply bg-gradient-radial from-[#0F172A] to-black/80;
+}
+
+.glass-card {
+  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-lg border border-white/10 dark:border-slate-700/10 rounded-2xl shadow-hover-md transition-all duration-300;
+}
+
+.glass-card:hover {
+  @apply shadow-shadow-md;
+}
+
+/* Custom animations */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Glassmorphism hover effects */
+.glass-hover {
+  @apply transition-all duration-300 hover:shadow-shadow-md;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/30 rounded-full hover:bg-primary/40;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/50;
+}
+
+::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) hsl(var(--background));
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus ring customization */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+/* Custom utility classes */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Gradient text */
+.bg-gradient-text {
+  @apply bg-gradient-to-r from-forest-900 via-gold-500 to-crimson-600 bg-clip-text text-transparent;
+}
+
+/* Container customization */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Button variants */
+.btn-primary {
+  @apply bg-forest-900 hover:bg-forest-800 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply bg-white/80 dark:bg-slate-900/80 hover:bg-white/10 dark:hover:bg-slate-700/20 border border-white/20 dark:border-slate-700/20 text-primary font-medium px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-md;
+}
+
+.btn-outline {
+  @apply border border-primary/20 dark:border-primary/20 hover:bg-primary/5 dark:hover:bg-primary/10 text-primary font-medium px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-md;
+}
+
+.btn-gold {
+  @apply bg-gold-500 hover:bg-gold-600 text-neutral-900 font-medium px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-gold-outline {
+  @apply border border-gold-500 hover:bg-gold-500/10 text-gold-500 font-medium px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-md;
+}
+
+.btn-crimson {
+  @apply bg-crimson-600 hover:bg-crimson-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* Input styles */
+.input-primary {
+  @apply w-full px-4 py-3 border border-input bg-background/50 dark:bg-muted/20 text-primary placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 rounded-lg;
+}
+
+.input-primary:focus {
+  @apply ring-primary/20;
+}
+
+/* Card styles */
+.card-primary {
+  @apply bg-background/50 dark:bg-muted/20 border border-border rounded-xl p-6 hover:shadow-shadow-md transition-all duration-300;
+}
+
+.card-glass {
+  @apply bg-white/60 dark:bg-slate-900/60 backdrop-blur-lg border border-white/10 dark:border-slate-700/10 rounded-2xl p-6 hover:shadow-shadow-md transition-all duration-300;
+}
+
+/* Avatar styles */
+.avatar-primary {
+  @apply w-10 h-10 rounded-full border border-white/20 dark:border-slate-700/20;
+}
+
+.avatar-lg {
+  @apply w-14 h-14 rounded-full border border-white/20 dark:border-slate-700/20;
+}
+
+/* Badge styles */
+.badge-primary {
+  @apply px-2.5 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary;
+}
+
+.badge-secondary {
+  @apply px-2.5 py-0.5 rounded text-xs font-medium bg-secondary/10 text-secondary-
+}
+
+.badge-accent {
+  @apply px-2.5 py-0.5 rounded text-xs font-medium bg-accent/10 text-accent;
+}
+
+.badge-destructive {
+  @apply px-2.5 py-0.5 rounded text-xs font-medium bg-destructive/10 text-destructive;
+}
+
+/* Special DatoChai badges */
+.badge-forest {
+  @apply bg-forest-900/10 text-forest-900;
+}
+
+.badge-gold {
+  @apply bg-gold-500/10 text-gold-500;
+}
+
+.badge-crimson {
+  @apply bg-crimson-600/10 text-crimson-600;
+}
+
+.badge-nvidia-green {
+  @apply bg-nvidia-green/10 text-nvidia-green;
+}
+
+/* Glassmorphism badge */
+.badge-glass {
+  @apply bg-white/20 dark:bg-slate-900/20 backdrop-blur-sm border border-white/10 dark:border-slate-700/10 rounded-full px-3 py-1 text-xs font-medium;
+}
+
+/* Header styles */
+.header-primary {
+  @apply bg-background/80 dark:bg-muted/80 backdrop-blur-md border-b border-border/50 dark:border-muted/20;
+}
+
+/* Navigation styles */
+.nav-link-primary {
+  @apply text-primary/80 hover:text-primary transition-colors duration-200 px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/5 dark:hover:bg-primary/10;
+}
+
+.nav-link-active {
+  @apply text-primary bg-primary/5 dark:bg-primary/10 px-3 py-2 rounded-md;
+}
+
+/* Footer styles */
+.footer-primary {
+  @apply bg-background/90 dark:bg-muted/90 backdrop-blur-md border-t border-border/50 dark:border-muted/20;
+}
+
+/* Responsive typography */
+.text-heading-xl {
+  @appltext-5xl md:text-6xl lg:text-7xl tracking-tight font-bold;
+}
+
+.text-heading-lg {
+  @appltext-3xl md:text-4xl lg:text-5xl tracking-tight font-semibold;
+}
+
+.text-heading-md {
+  @appltext-2xl md:text-3xl lg:text-4xl tracking-tight font-semibold;
+}
+
+.text-heading-sm {
+  @appltext-xl md:text-2xl lg:text-3xl tracking-tight font-semibold;
+}
+
+/* Utility classes for specific components */
+.prediction-card {
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border border-white/10 dark:border-slate-700/10 rounded-2xl p-6 hover:shadow-shadow-md transition-all duration-300;
+}
+
+.prediction-number {
+  @apply w-14 h-14 flex items-center justify-center bg-gold-500/20 dark:bg-gold-500/10 text-gold-600 dark:text-gold-400 font-bold rounded-xl drop-shadow-md;
+}
+
+.prediction-number-secondary {
+  @apply w-12 h-12 flex items-center justify-center bg-crimson-600/20 dark:bg-crimson-600/10 text-crimson-600 dark:text-crimson-400 font-bold rounded-xl drop-shadow-md;
+}
+
+.stats-card {
+  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-lg border border-white/10 dark:border-slate-700/10 rounded-xl p-5 hover:shadow-shadow-md transition-all duration-300;
+}
+
+.stat-value {
+  @apply text-3xl font-bold text-primary mb-2;
+}
+
+.stat-label {
+  @apply text-sm text-muted-foreground uppercase tracking-wider;
+}
+
+/* Blog styles */
+.blog-card {
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border border-white/10 dark:border-slate-700/10 rounded-2xl p-6 hover:shadow-shadow-md transition-all duration-300 overflow-hidden;
+}
+
+.blog-tag {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gold-500/10 text-gold-800;
+}
+
+.blog-meta {
+  @appltext-sm text-muted-foreground whitespace-nowrap;
+}
+
+/* Form styles */
+.form-label {
+  @appltext-sm font-medium text-primary mb-2;
+}
+
+.form-input {
+  @applw-full px-4 py-3 border border-input bg-background/50 dark:bg-muted/20 text-primary placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 rounded-lg;
+}
+
+.form-textarea {
+  @applw-full px-4 py-3 border border-input bg-background/50 dark:bg-muted/20 text-primary placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 rounded-lg resize-none;
+}
+
+.form-select {
+  @applw-full px-4 py-3 border border-input bg-background/50 dark:bg-muted/20 text-primary placeholder-muted/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-200 rounded-lg;
+}
+
+/* Loading skeleton styles */
+.skeleton {
+  @applanimate-pulse bg-gray-200 dark:bg-gray-700;
+}
+
+.skeleton-text {
+  @applanimate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+}
+
+.skeleton-text-line {
+  @applanimate-pulse bg-gray-200 dark:bg-gray-700 h-4 w-full rounded;
+}
+
+.skeleton-text-line-w-50 {
+  @applanimate-pulse bg-gray-200 dark:bg-gray-700 h-4 w-1/2 rounded;
+}
+
+.skeleton-text-line-w-75 {
+  @applanimate-pulse bg-gray-200 dark:bg-gray-700 h-4 w-3/4 rounded;
+}
+
+.skeleton-avatar {
+  @applanimate-pulse bg-gray-200 dark:bg-gray-700 h-10 w-10 rounded-full;
+}
+
+.skeleton-circle {
+  @applanimate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-8 rounded-full;
+}
+
+/* Utility classes for specific layouts */
+.grid-cols-responsive {
+  @applgrid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+}
+
+.grid-cols-footer {
+  @applgrid-cols-4 gap-8;
+}
+
+@media (max-width: 768px) {
+  .grid-cols-footer {
+    @applgrid-cols-1;
   }
 }
 
-@layer base {
-  .theme {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
-  }
-  :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-    --nvidia-green: #76B900;
-  }
-  .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-    --nvidia-green: #76B900;
-  }
-  * {
-    @apply border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
-  }
+/* Footer utility bar */
+.footer-utility-bar {
+  @applborder-t border-border/50 dark:border-muted/20 bg-background/80 dark:bg-muted/80 backdrop-blur-md;
+}
+
+.footer-utility-left {
+  @appltext-sm text-muted-foreground;
+}
+
+.footer-utility-center {
+  @applflex items-center space-x-4;
+}
+
+.footer-utility-right {
+  @appltext-sm text-muted-foreground;
 }

@@ -1,128 +1,64 @@
-import '../globals.css';
-import type { Metadata } from 'next';
+import '@/app/globals.css';
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 import { Inter } from 'next/font/google';
-import ThemeToggle from '@/components/ui/theme-toggle';
-import LanguageToggle from '@/components/ui/language-toggle';
+import { Poppins } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 
 const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
-export const metadata: Metadata = {
-  title: 'DatoChai',
-  description: 'AI-Powered 4D Analytics Platform',
+export const metadata = {
+  title: 'Ramalan 4D Datochai Hari Ini | AI Saintifik & Carta Ramalan',
+  description: 'Dapatkan 4D ramalan paling saintifik di Malaysia dengan Datochai 4d. Akses carta ramalan Magnum, Toto & Damacai yang dijana oleh AI & pakar data hari ini.',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+  },
+  openGraph: {
+    title: 'Carta Ramalan 4D DatoChai | AI Saintifik & Statistik 10+ Tahun',
+    description: 'Platform ramalan 4D berasaskan Kecerdasan Buatan (AI), Machine Learning & Analisis Statistik oleh Pakar NVIDIA & Penyelidik PhD.',
+    images: [
+      {
+        url: '/uploads/banners/og-home-hero.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Carta Ramalan 4D DatoChai',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Carta Ramalan 4D DatoChai | AI Saintifik & Statistik 10+ Tahun',
+    description: 'Platform ramalan 4D berasaskan Kecerdasan Buatan (AI), Machine Learning & Analisis Statistik oleh Pakar NVIDIA & Penyelidik PhD.',
+    images: [
+      {
+        url: '/uploads/banners/og-home-hero.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Carta Ramalan 4D DatoChai',
+      },
+    ],
+  },
+  alternates: {
+    canonical: 'https://datochai.com/',
+  },
 };
 
 export default function PublicLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="bg-background min-h-screen flex flex-col">
-        <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b border-border/50">
-          <nav className="mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
-            <div className="flex-shrink-0 flex items-center space-x-3">
-              <span className="text-2xl font-bold text-nvidia-green">DatoChai</span>
-            </div>
-            <div className="hidden md:flex items-center space-x-4">
-              <ThemeToggle />
-              <LanguageToggle />
-            </div>
-            <div className="md:hidden flex items-center space-x-2">
-              <ThemeToggle />
-              <LanguageToggle />
-            </div>
-          </nav>
-        </header>
-
-        <main className="flex-1">{children}</main>
-
-        <footer className="bg-background/80 backdrop-blur-md border-t border-border/50">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {/* Lotteries */}
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground">Lotteries</h3>
-                <ul className="space-y-1 text-sm text-foreground/80">
-                  <li>Magnum 4D</li>
-                  <li>Sports Toto</li>
-                  <li>Damacai</li>
-                  <li>Sabah 4D</li>
-                  <li>Sarawak 4D</li>
-                  <li>STC</li>
-                  <li>Poker</li>
-                  <li>Lotto</li>
-                  <li>Powerball</li>
-                </ul>
-              </div>
-
-              {/* About Us */}
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground">About Us</h3>
-                <ul className="space-y-1 text-sm text-foreground/80">
-                  <li>
-                    <a href="/about" className="hover:text-foreground/100 transition-colors">
-                      Our Story
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/about#team" className="hover:text-foreground/100 transition-colors">
-                      Team
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/about#mission" className="hover:text-foreground/100 transition-colors">
-                      Mission & Vision
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Legal */}
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground">Legal</h3>
-                <ul className="space-y-1 text-sm text-foreground/80">
-                  <li>
-                    <a href="/legal/terms" className="hover:text-foreground/100 transition-colors">
-                      Terms of Service
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/legal/privacy" className="hover:text-foreground/100 transition-colors">
-                      Privacy Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/legal/cookies" className="hover:text-foreground/100 transition-colors">
-                      Cookie Policy
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Compliance */}
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground">Compliance</h3>
-                <ul className="space-y-1 text-sm text-foreground/80">
-                  <li>
-                    <a href="/compliance" className="hover:text-foreground/100 transition-colors">
-                      Regulatory Compliance
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/compliance/responsible-gaming" className="hover:text-foreground/100 transition-colors">
-                      Responsible Gaming
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-8 border-t border-border/50 pt-6 text-center text-sm text-foreground/60">
-              © {new Date().getFullYear()} DatoChai. All rights reserved.
-            </div>
-          </div>
-        </footer>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Header />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
