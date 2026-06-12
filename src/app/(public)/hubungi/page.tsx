@@ -25,7 +25,7 @@ export default function ContactPage() {
         eyebrow="Sokongan Pelanggan"
         title="Hubungi DatoChai"
         subtitle="Apakah anda ada sebarang soalan, maklumat, atau maklum balas? Kami di sini untuk membantu."
-        crumbs={[{ label: 'Hubungi DatoChai' ]}}
+        crumbs={[{ label: 'Hubungi DatoChai' }]}
       >
         <div className="space-y-4 text-sm leading-relaxed text-slate-200/90 sm:text-base">
           <p>
@@ -128,7 +128,7 @@ export default function ContactPage() {
             {/* Simple contact form (mockup since no backend) */}
             <form className="mt-6 space-y-4" action="#" method="POST">
               <div>
-                <label htmlName="name" className="block mb-2 text-sm font-medium text-foreground">
+                <label htmlFor="name" className="block mb-2 text-sm font-medium text-foreground">
                   Nama Penuh
                 </label>
                 <input
@@ -142,7 +142,7 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlName="email" className="block mb-2 text-sm font-medium text-foreground">
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-foreground">
                   Alamat Email
                 </label>
                 <input
@@ -156,7 +156,7 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlName="subject" className="block mb-2 text-sm font-medium text-foreground">
+                <label htmlFor="subject" className="block mb-2 text-sm font-medium text-foreground">
                   Perkara
                 </label>
                 <select
@@ -175,13 +175,13 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlName="message" className="block mb-2 text-sm font-medium text-foreground">
+                <label htmlFor="message" className="block mb-2 text-sm font-medium text-foreground">
                   Mesej
                 </label>
                 <textarea
                   id="message"
                   name="message"
-                  rows="6"
+                  rows={6}
                   required
                   className="field w-full"
                   placeholder="Beritahu kami bagaimana kami boleh membantu anda..."
