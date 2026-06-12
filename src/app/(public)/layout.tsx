@@ -1,12 +1,7 @@
 import '@/app/globals.css';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { Inter } from 'next/font/google';
-import { Poppins } from 'next/font/google';
-import { ThemeProvider } from 'next-themes';
-
-const inter = Inter({ subsets: ['latin'] });
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+import { BackToTop } from '@/components/ui/back-to-top';
 
 export const metadata = {
   title: 'Ramalan 4D Datochai Hari Ini | AI Saintifik & Carta Ramalan',
@@ -52,14 +47,11 @@ export default function PublicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Header />
-          {children}
-          <Footer />
-        </ThemeProvider>
-      </body>
-    </html>
+    <>
+      <Header />
+      <div className="min-h-screen">{children}</div>
+      <Footer />
+      <BackToTop />
+    </>
   );
 }

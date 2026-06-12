@@ -1,161 +1,218 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { BlogContent } from '@/components/blog-content';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { ArrowRight, CalendarDays, Clock, ShieldAlert, Sparkles, UserRound } from 'lucide-react';
+import { PageHero } from '@/components/ui/page-hero';
+import { Section } from '@/components/ui/section';
+import { UtilityBar } from '@/components/ui/utility-bar';
+import { BLOG_POSTS, BLOG_POSTS_BY_SLUG } from '@/lib/blog-data';
+import { DISCLAIMER_BODY, SITE } from '@/lib/site-data';
 
-export const generateStaticParams = async () => {
-  // In a real app, this would fetch all blog post slugs from a CMS or API
-  return [
-    { slug: 'analisis-teknik-model-lstm-lebih-tepat' },
-    { slug: 'panduan-pemula-carta-ramalan-4d' },
-    { slug: 'update-model-mei-2026' },
-    { slug: 'metodologi-baru-gelombang-eliot' },
-    { slug: 'interview-pakar-francesco-audrino' },
-    { slug: 'analisis-pasaran-akhir-pekan' },
-  ];
-};
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return BLOG_POSTS.map((p) => ({ slug: p.slug }));
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const post = BLOG_POSTS_BY_SLUG[params.slug];
+  if (!post) return {};
+  const title = `${post.title} | DatoChai`;
+  const description = post.excerpt.slice(0, 155);
+  const url = `${SITE.domain}/blog/${post.slug}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'article',
+    },
+    twitter: { card: 'summary_large_image', title, description },
+  };
+}
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  // Sample blog post data - in a real app, this would come from a CMS or API
-  const blogPosts: Record<string, any> = {
-    'analisis-teknik-model-lstm-lebih-tepat': {
-      id: 1,
-      title: 'Analisis Teknis: Mengapa Model LSTM Kami Lebih Tepat daripada Model Tradisional',
-      date: '2026-06-10',
-      readTime: '5 min baca',
-      thumbnail: '/uploads/blog/lstm-vs-traditional.webp',
-      likes: 124,
-      bookmarks: 89,
-      content: `
-        <p>Dalam artikel teknis ini, kami akan membandingkan prestasi model LSTM yang digunakan oleh Datochai 4d dengan model statistik tradisional seperti ARIMA dan ekspansial smoothing untuk meramalan hasil loteri 4D.</p>
+  const post = BLOG_POSTS_BY_SLUG[params.slug];
+  if (!post) notFound();
 
-        <h2>Mengapa Model Tradisional Tidak Cukup Lagih</h2>
-        <p>Model statistik tradisional seperti ARIMA (AutoRegressive Integrated Moving Average) dan ekspansial smoothing memiliki keterbatasan ketika bekerja dengan data yang kompleks dan non-linear seperti hasil tarikan loteri. Model-model ini diasumsikan bahwa data mengikuti pola tertentu yang dapat dijelaskan oleh persamaan matematika sederhana, tetapi dalam kenyataan, hasil tarikan loteri banyak Dipengaruhi oleh banyak faktor yang saling berinteraksi dengan cara yang kompleks.</p>
-
-        <h2>Keunggulan Model LSTM</h2>
-        <p>Long Short-Term Memory (LSTM) adalah jenis jaringan syaraf tiruan yang direka khusus untuk menangani data deret waktu (time series data) dengan dependensi jangka panjang. Berikut adalah beberapa keunggulan LSTM:</p>
-        <ul>
-          <li>Mampuh mengingat informasi dari waktu lalu untuk periode yang sangat lama</li>
-          <li>Mampuh melupakan informasi yang tidak relevan melalui mekanisme gate yang sophisticted</li>
-          <li>Mampuh menangani pola non-linear dan kompleks dalam data</li>
-          <li>Mampuh belajar dari contoh dan memperbaiki prestasinya seiring waktu</li>
-        </ul>
-
-        <h2>Hasil Analisis Kami</h2>
-        <p>Dalam uji coba kami yang dilakukan selama 6 bulan dengan data historis dari Magnum 4D, Sports Toto 4D, dan Damacai 4D, model LSTM menunjukkan peningkatan ketepatan sebesar 23% berbanding model ARIMA tradizionale dan 17% berbanding model ekspansial smoothing.</p>
-
-        <p>Ini menunjukkan bahawa pendekatan berbasis kecerdasan buatan yang kami gunakan tidak hanya lebih tepat, tetapi juga lebih mampu beradaptasi dengan perubahan dalam dinamik pasaran loteri seiring waktu.</p>
-      `,
-    },
-    'panduan-pemula-carta-ramalan-4d': {
-      id: 2,
-      title: 'Panduan Pemula: Cara Membaca Carta Ramalan 4D Datochai Secara Efektif',
-      date: '2026-06-08',
-      readTime: '7 min baca',
-      thumbnail: '/uploads/blog/beginners-guide.webp',
-      likes: 210,
-      bookmarks: 156,
-      content: `
-        <p>Baru menggunakan platform Datochai 4d? Panduan ini akan membimbing anda melalui setiap komponen carta ramalan 4D kami dan menjelaskan cara menginterpretasikan nomor-nomor yang diberikan untuk meningkatkan peluang menang anda.</p>
-
-        <h2>Memahami Struktur Carta Ramalan 4D</h2>
-        <p>Carta ramalan 4D Datochai tidak hanya memberikan angka-angka yang diprediksi, tetapi juga menyertakan berbagai jenis informasi yang boleh membantu anda membuat keputusan yang lebih berasaskan informasi.</p>
-
-        <h3>1. Angka Ramalan Utama (Main Prediction Numbers)</h3>
-        <p>Ini adalah angka-angka 4D yang 모델 kami prediksi sebagai having the highest probability of being drawn in the upcoming draw. Biasanya diberikan dalam bentuk empat digit (Contoh: 1234).</p>
-
-        <h3>2. Angka Pendukung (Supporting Numbers)</h3>
-        <p>Ini adalah angka-angka tambahan yang boleh dianggap sebagai "backup" jika angka utama tidak tepat atau untuk strategi pelbagaian nombor.</p>
-
-        <h3>3. Tingkat Keyakinan (Confidence Level)</h3>
-        <p>Setiap ramalan disertai dengan tingkat keyakinan yang menunjukkan seberapa yakin model kami dengan prediksi yang diberikan. Tingkat keyakinan ditunjukkan dalam bentuk persentase (Contoh: 85% keyakinan).</p>
-
-        <h3>4. Analisis Trend</h3>
-        <p>Setiap carta ramalan juga menyertakan analisis trend yang menunjukkan apakah nombor-nomor tertentu sedang dalam trending naik (hot) atau trending turun (cold) berdasarkan data historis terbaru.</p>
-
-        <h2>Cara Menggunakan Informasi Ini</h2>
-        <p>Berikut adalah beberapa cara efektif menggunakan carta ramalan 4D Datochai:</p>
-        <ol>
-          <li>Gunakan angka RAMALAN UTAMA sebagai pilihan utama anda</li>
-          <li>Pertimbangkan ANGKA PENDUKUNG sebagai pilihan sekunder atau untuk strategi cabungan</li>
-          <li>Perhatikan TINGKAT KEYAKINAN - semakin tinggi keyakinan, semakin besar probabilitas kekejutan</li>
-          <li>Ikuti TREND yang diberikan untuk memahami arah gerakan nombor dalam pasar tertentu</li>
-          <li>Selalu bermain dengan bertanggungjawab dan tidak melewati batas keupayaan kewangan anda</li>
-        </ol>
-
-        <h2>Penutup</h2>
-        <p>Dengan memahami struktur dan komponen carta ramalan 4D Datochai, anda boleh membuat keputusan yang lebih berdasarkan informasi dan strategi dalam bermain 4D. Ingatlah bahwa ramalan hanyalah alat bantu dan bukan jaminan kemenangan - selalu main dengan bijak dan bertanggungjawab.</p>
-      `,
-    },
-    // Default fallback for any other slug
-    'default': {
-      id: 999,
-      title: 'Artikel Tidak Dijumpai',
-      date: '2026-06-10',
-      readTime: '0 min baca',
-      thumbnail: '/uploads/blog/default.webp',
-      likes: 0,
-      bookmarks: 0,
-      content: `<p>Maaf, artikel yang anda cari tidak dijumpai. Sila kembali ke <a href="/blog">halaman blog utama</a> atau cuba cari artikel lain.</p>`,
-    }
-  };
-
-  const post = blogPosts[params.slug] || blogPosts['default'];
+  const meta = `${post.author} · ${post.date} · ${post.readTime}`;
+  const related = BLOG_POSTS.filter((p) => p.slug !== post.slug).slice(0, 3);
 
   return (
     <>
-      <Header />
-      <main className="min-h-screen bg-background">
-        <section className="py-16">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-8">
-              <a href="/blog" className="text-sm text-muted-foreground/60 hover:text-primary transition-colors">
-                ← Kembali ke Blog
-              </a>
-            </div>
+      <PageHero
+        tone="brand"
+        eyebrow={post.category}
+        title={post.title}
+        crumbs={[{ href: '/blog', label: 'Blog' }, { label: post.category }]}
+      >
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-300">
+          <span className="flex items-center gap-1.5">
+            <UserRound className="h-4 w-4 text-gold-300" /> {post.author}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <CalendarDays className="h-4 w-4 text-gold-300" /> {post.date}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <Clock className="h-4 w-4 text-gold-300" /> {post.readTime}
+          </span>
+        </div>
+      </PageHero>
 
-            <div className="glass-card">
-              <Image
-                src={post.thumbnail}
-                alt={post.title}
-                className="w-full h-48 object-cover"
-                priority
-              />
-              <div className="p-8">
-                <h1 className="text-4xl md:text-5xl font-bold text-balance mb-6">{post.title}</h1>
-                <div className="flex items-center justify-between text-xs text-muted-foreground/60 mb-4">
-                  <span>{post.date}</span>
-                  <span>{post.readTime}</span>
-                </div>
-
-                <div className="prose dark:prose-invert max-w-none">
-                  {!!post.content && (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: post.content }}
-                    />
-                  )}
-                </div>
-
-                <div className="mt-8 pt-6 border-t border-border/50 dark:border-muted/20 flex justify-between space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <Bookmark className="w-4 h-4 text-gold-500" />
-                    <span className="text-xs">{post.bookmarks}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Heart className="w-4 h-4 text-gold-500" />
-                    <span className="text-xs">{post.likes}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Copy className="w-4 h-4 text-gold-500" />
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* ===== UTILITY BAR (only client piece) ===== */}
+      <section className="bg-neutral-50 dark:bg-slate-950/40">
+        <div className="container-custom -mt-7 pb-2">
+          <div className="glass-card flex flex-col items-start justify-between gap-4 p-4 sm:flex-row sm:items-center sm:p-5">
+            <p className="text-xs text-muted-foreground">
+              Sukai, simpan, atau salin pautan analisis ini untuk rujukan masa hadapan.
+            </p>
+            <UtilityBar likes={post.likes} copyText={`${post.title} — ${SITE.domain}/blog/${post.slug}`} />
           </div>
-        </section>
-      </main>
-      <Footer />
+        </div>
+      </section>
+
+      {/* ===== ARTICLE BODY ===== */}
+      <section className="bg-white dark:bg-slate-900/40">
+        <div className="container-custom py-14 sm:py-16">
+          <article className="mx-auto w-full max-w-3xl prose-datochai">
+            <p>
+              Apabila membincangkan ramalan 4D berasaskan kecerdasan buatan, perbezaan antara tekaan rawak dan
+              analisis berstruktur terletak pada disiplin metodologi. Dalam analisis bertajuk{' '}
+              <strong>{post.category}</strong> ini, pasukan penyelidik DatoChai menghuraikan bagaimana isyarat
+              statistik diekstrak daripada hingar data cabutan loteri yang kelihatan sepenuhnya rawak — dan mengapa
+              ketelusan proses jauh lebih bernilai daripada janji kemenangan yang mustahil dijamin.
+            </p>
+            <p>
+              Setiap angka pada carta ramalan kami bukan terbit daripada gerak hati, tetapi daripada satu saluran
+              pemprosesan berlapis yang bermula dengan pengumpulan data sejarah melebihi sepuluh tahun. Data mentah
+              ini ditapis, dinormalisasi, dan disusun menjadi siri masa (time-series) sebelum disuap ke dalam
+              rangkaian neural. Pendekatan ini memastikan bahawa setiap unjuran boleh diaudit semula dan disahkan
+              terhadap keputusan rasmi pengendali loteri tanpa sebarang tapisan.
+            </p>
+
+            <h2>Seni Bina Model di Sebalik Ramalan</h2>
+            <p>
+              Tulang belakang sistem kami ialah rangkaian <strong>Long Short-Term Memory (LSTM)</strong> — sejenis
+              rangkaian neural berulang yang direka khusus untuk mengingati pergantungan corak jangka panjang dalam
+              data berurutan. Berbeza dengan model statistik klasik seperti <strong>ARIMA</strong> yang mengandaikan
+              hubungan linear dan kepegunan (stationarity), LSTM mampu menangkap interaksi tak linear yang kompleks
+              antara digit, kedudukan, dan selang masa cabutan.
+            </p>
+            <p>
+              Untuk mengukuhkan keteguhan unjuran, isyarat LSTM digabungkan dengan komponen makro daripada ARIMA dan
+              Meta Prophet dalam satu Rangkaian Ensemble Hibrid Bertingkat. ARIMA mengekstrak trend dan kemusiman
+              berskala besar, manakala baki sisa tak linear yang tertinggal dirungkai oleh LSTM. Hasil komposit ini
+              kemudiannya dikalibrasi semula melalui pengoptimuman Bayesian sebelum diterbitkan kepada pengguna.
+            </p>
+
+            <h2>Membaca Isyarat: Panas, Sejuk &amp; Tertunggak</h2>
+            <p>
+              Enjin kami mengelaskan setiap digit kepada tiga kategori dinamik yang mencerminkan tingkah laku
+              statistiknya dalam tetingkap masa terkini. Pengkategorian ini membantu pengguna mentafsir carta dengan
+              konteks yang lebih kaya, bukan sekadar melihat senarai angka mentah:
+            </p>
+            <ul>
+              <li>
+                <strong>Nombor panas</strong> — digit yang menunggang momentum varians jangka pendek dan muncul lebih
+                kerap daripada frekuensi jangkaan.
+              </li>
+              <li>
+                <strong>Nombor sejuk</strong> — digit yang kehilangan kelibat melampaui sisihan piawai biasa dalam
+                beberapa cabutan terakhir.
+              </li>
+              <li>
+                <strong>Nombor tertunggak (overdue)</strong> — digit yang berdepan tekanan statistik untuk membuat
+                pembetulan min (mean reversion) kembali ke frekuensi asalnya, berpandukan Hukum Nombor Besar.
+              </li>
+            </ul>
+
+            <div className="my-8 rounded-3xl border border-gold-500/40 bg-gold-500/5 p-6 backdrop-blur-xl dark:bg-gold-500/10">
+              <p className="mb-3 flex items-center gap-2 font-poppins text-base font-bold text-gold-700 dark:text-gold-300">
+                <Sparkles className="h-5 w-5" /> Ringkasan Utama
+              </p>
+              <ul className="m-0 list-disc space-y-2 pl-5 text-sm text-slate-700 dark:text-slate-300">
+                <li>Ramalan dijana melalui ensemble hibrid LSTM + ARIMA + Prophet, bukan tekaan rawak.</li>
+                <li>Setiap angka boleh disahkan secara telus terhadap keputusan rasmi pengendali.</li>
+                <li>Klasifikasi panas/sejuk/tertunggak ialah alat pengurusan risiko, bukan jaminan kemenangan.</li>
+                <li>Loteri kekal sebagai permainan rawak bebas — bermainlah secara bertanggungjawab.</li>
+              </ul>
+            </div>
+
+            <h2>Mengapa Ketelusan Lebih Penting daripada Jaminan</h2>
+            <p>
+              Tiada model AI yang sempurna, dan mana-mana platform yang mendakwa boleh menjamin kemenangan sebenarnya
+              menjual ilusi. Falsafah kami berbeza: kami mengoptimumkan ruang kebarangkalian dan memaparkan rekod hit
+              serta miss secara terbuka di halaman Ketepatan. Ramalan yang tersasar dipaparkan sebagai bukti
+              ketelusan, bukan disembunyikan sebagai kelemahan.
+            </p>
+            <p>
+              Dengan memahami logik di sebalik setiap angka — daripada pengekstrakan data hingga validasi pakar
+              manusia — pengguna dapat membuat keputusan yang lebih berinformasi dan, yang lebih penting, lebih
+              waras. Carta ramalan sepatutnya menjadi alat bantu analisis berasaskan logik matematik, bukan alasan
+              untuk mempertaruhkan melebihi kemampuan peribadi.
+            </p>
+
+            {/* ===== MANDATORY DISCLAIMER ===== */}
+            <div className="mt-10 rounded-3xl border-l-4 border-crimson-600 bg-[#F3F4F6] p-6 shadow-sm dark:bg-slate-900 sm:p-8">
+              <p className="m-0 flex items-center gap-2 font-poppins text-base font-bold text-crimson-700 dark:text-crimson-400">
+                <ShieldAlert className="h-5 w-5" /> Penafian &amp; Permainan Bertanggungjawab
+              </p>
+              <p className="mb-0 mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                {DISCLAIMER_BODY}
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      {/* ===== RELATED ARTICLES ===== */}
+      <Section tone="light">
+        <div className="mb-8 flex items-end justify-between">
+          <h2 className="h-2 text-foreground">Artikel Berkaitan</h2>
+          <Link
+            href="/blog"
+            className="hidden items-center gap-1 text-sm font-semibold text-forest-700 dark:text-forest-300 sm:inline-flex"
+          >
+            Semua Artikel <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {related.map((rel) => (
+            <article key={rel.slug} className="glass-card glass-hover flex flex-col overflow-hidden p-0">
+              <Link href={`/blog/${rel.slug}`}>
+                <div className={`relative h-40 bg-gradient-to-br ${rel.gradient}`}>
+                  <span className="pill-glass absolute left-3 top-3 text-white">{rel.category}</span>
+                </div>
+              </Link>
+              <div className="flex flex-1 flex-col p-5">
+                <div className="mb-2 flex items-center gap-3 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <CalendarDays className="h-3.5 w-3.5" /> {rel.date}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3.5 w-3.5" /> {rel.readTime}
+                  </span>
+                </div>
+                <Link href={`/blog/${rel.slug}`}>
+                  <h3 className="font-poppins text-base font-bold leading-snug text-foreground hover:text-forest-700 dark:hover:text-forest-300">
+                    {rel.title}
+                  </h3>
+                </Link>
+                <p className="mt-2 flex-1 text-sm text-muted-foreground line-clamp-2">{rel.excerpt}</p>
+                <Link
+                  href={`/blog/${rel.slug}`}
+                  className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-forest-700 dark:text-forest-300"
+                >
+                  Baca <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Section>
     </>
   );
 }

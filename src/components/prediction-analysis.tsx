@@ -1,5 +1,3 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
 
 export function PredictionAnalysis({ lotteryType }: { lotteryType: string }) {
   // Map route names to display names

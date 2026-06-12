@@ -1,5 +1,3 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
 import { Hero } from '@/components/hero';
 import { EEA_T } from '@/components/eea-t';
 import { LotteryOverview } from '@/components/lottery-overview';

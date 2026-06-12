@@ -1,6 +1,4 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
-import { Image } from 'next/image';
+import Image from 'next/image';
 import { Bookmark, Heart, Copy } from 'lucide-react';
 import Link from 'next/link';
 
@@ -20,12 +18,13 @@ interface BlogPostCardProps {
 
 export function BlogPostCard({ post }: BlogPostCardProps) {
   return (
-    <Link href={`/blog/${post.slug}`} passHref>
-      <a className="block hover:shadow-[0_10px_25px_-5px_rgba(212,175,55,0.3)] transition-all duration-300">
-        <div className="glass-card overflow-hidden">
+    <Link href={`/blog/${post.slug}`} className="block hover:shadow-[0_10px_25px_-5px_rgba(212,175,55,0.3)] transition-all duration-300">
+      <div className="glass-card overflow-hidden">
           <Image
             src={post.thumbnail}
             alt={post.title}
+            width={640}
+            height={360}
             className="w-full h-48 object-cover"
             priority
           />
@@ -51,7 +50,6 @@ export function BlogPostCard({ post }: BlogPostCardProps) {
             </div>
           </div>
         </div>
-      </a>
     </Link>
   );
 }

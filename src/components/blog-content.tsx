@@ -1,5 +1,3 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
 
 interface BlogContentProps {
   content: string;

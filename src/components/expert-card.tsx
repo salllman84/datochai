@@ -1,5 +1,3 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
 
 interface ExpertCardProps {
   expert: {
@@ -20,7 +18,7 @@ export function ExpertCard({ expert }: ExpertCardProps) {
           alt={expert.name}
           className="w-full h-full object-cover rounded-full border-2 border-white/20 dark:border-slate-700/20"
           onError={(e) => {
-            e.target.src = '/images/placeholder-expert.svg'; // fallback
+            e.currentTarget.src = '/images/placeholder-expert.svg';
           }}
         />
       </div>

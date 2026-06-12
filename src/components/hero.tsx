@@ -1,70 +1,111 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
+import Link from 'next/link';
+import { ArrowRight, ChevronDown, Sparkles } from 'lucide-react';
+
+// Deterministic node field (no Math.random — stable across SSR/CSR).
+const NODES = [
+  { x: 12, y: 22 }, { x: 26, y: 64 }, { x: 38, y: 30 }, { x: 50, y: 72 },
+  { x: 62, y: 26 }, { x: 74, y: 58 }, { x: 86, y: 34 }, { x: 20, y: 44 },
+  { x: 44, y: 52 }, { x: 68, y: 44 }, { x: 90, y: 70 }, { x: 8, y: 78 },
+];
+const EDGES: [number, number][] = [
+  [0, 7], [7, 1], [1, 8], [8, 2], [2, 4], [4, 9], [9, 5], [5, 3],
+  [3, 8], [9, 6], [6, 10], [5, 10], [11, 1], [0, 2], [4, 6],
+];
+
+function NeuralField() {
+  return (
+    <svg
+      className="absolute inset-0 h-full w-full opacity-70"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      aria-hidden
+    >
+      {EDGES.map(([a, b], i) => (
+        <line
+          key={i}
+          x1={NODES[a].x}
+          y1={NODES[a].y}
+          x2={NODES[b].x}
+          y2={NODES[b].y}
+          stroke="#D4AF37"
+          strokeWidth="0.12"
+          strokeOpacity="0.28"
+        />
+      ))}
+      {NODES.map((n, i) => (
+        <circle
+          key={i}
+          cx={n.x}
+          cy={n.y}
+          r="0.55"
+          fill="#D4AF37"
+          className="animate-pulse-slow"
+          style={{ animationDelay: `${(i % 6) * 0.35}s` }}
+        />
+      ))}
+    </svg>
+  );
+}
 
 export function Hero() {
   return (
-    <section className={clsx(
-      'min-h-screen flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8',
-      'hero-gradient relative overflow-hidden'
-    )}>
-      {/* Particle.js neural network simulation - simplified with Tailwind */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(var(--tw-gradient-stops))] from-[#006400] via-black opacity-80"
-             style={{ '--tw-gradient-stops': '0%, 100%' }}></div>
-        {/* Neural network dots and lines */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="relative w-[80%] h-[80%]">
-            {/* Generate some dots and lines for neural network effect */}
-            {[...Array(12)].map((_, i) => (
-              <div key={i} className="absolute">
-                <div className="w-2 h-2 bg-gold-500/60 rounded-full
-                              animate-[pulse_3s_ease-in-out_infinite]
-                              delay-[${i * 0.2}s]"></div>
-              </div>
-            ))}
-            {/* Connecting lines */}
-            <div className="absolute inset-0">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="absolute w-[2px] h-[20px] bg-gold-500/30
-                              rotate-[${i * 45}deg] origin-bottom
-                              animate-[pulse_3s_ease-in-out_infinite]
-                              delay-[${i * 0.15}s]"></div>
-              ))}
-            </div>
-          </div>
+    <section className="hero-gradient relative isolate overflow-hidden">
+      <div className="absolute inset-0">
+        <NeuralField />
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+
+      <div className="container-custom relative z-10 flex min-h-[88vh] flex-col items-center justify-center py-20 text-center">
+        <span className="pill border border-gold-500/40 bg-white/5 text-gold-200 backdrop-blur-md">
+          <Sparkles className="h-3.5 w-3.5" /> AI Saintifik · Rangkaian Neural · Statistik 10+ Tahun
+        </span>
+
+        <h1 className="mt-6 max-w-4xl font-poppins text-3xl font-extrabold leading-tight tracking-tight text-white text-balance sm:text-5xl lg:text-6xl">
+          Carta Ramalan 4D DatoChai
+          <span className="mt-2 block bg-gradient-to-r from-gold-300 via-gold-400 to-gold-200 bg-clip-text text-transparent">
+            Platform Analisis AI Saintifik &amp; Rangkaian Neural Terkini
+          </span>
+        </h1>
+
+        <p className="mt-5 max-w-2xl text-base font-medium text-gold-100/90 sm:text-lg">
+          Dikuasakan oleh Artificial Intelligence, Machine Learning &amp; Analisis Statistik 10+ Tahun
+          yang dipantau oleh Pakar NVIDIA Senior AI Architect dan Penyelidik PhD.
+        </p>
+
+        <p className="mt-5 max-w-3xl text-sm leading-relaxed text-slate-300/90 sm:text-base">
+          Selamat datang ke pusat kecemerlangan sains data terunggul di Malaysia. Berbeza dengan platform
+          tekaan rawak tradisional, Ramalan 4D Datochai memanfaatkan kuasa pengkomputeran berprestasi tinggi
+          untuk merungkai corak tersembunyi di sebalik siri nombor. Model AI kami memproses jutaan kombinasi
+          cabutan dari pangkalan data sejarah melebihi sepuluh tahun untuk menghasilkan carta ramalan yang
+          mempunyai nilai kebarangkalian tertinggi.
+        </p>
+
+        <div className="mt-8 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
+          <Link href="#hab-ramalan" className="btn-gold w-full sm:w-auto">
+            Lihat Ramalan Hari Ini <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link href="#hab-ramalan" className="btn-gold-outline w-full border-gold-300/60 text-gold-100 hover:bg-white/10 sm:w-auto">
+            Pilih Loteri Anda
+          </Link>
         </div>
+
+        <dl className="mt-12 grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
+          {[
+            ['10+', 'Tahun Data'],
+            ['6', 'Pakar AI & Statistik'],
+            ['10', 'Pasaran 4D'],
+            ['100%', 'Telus & Boleh Disahkan'],
+          ].map(([v, l]) => (
+            <div key={l} className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 backdrop-blur-md">
+              <dt className="font-poppins text-2xl font-bold text-gold-300">{v}</dt>
+              <dd className="mt-1 text-xs text-slate-300">{l}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 text-center text-neutral-900 dark:text-neutral-50 space-y-6">
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-balance tracking-tight">
-          Carta Ramalan 4D DatoChai | Platform Analisis AI Saintifik & Rangkaian Neural Terkini
-        </h1>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-balance">
-          Dikuasakan oleh Artificial Intelligence, Machine Learning & Analisis Statistik 10+ Tahun yang dipantau oleh Pakar NVIDIA Senior AI Architect dan Penyelidik PhD.
-        </h2>
-        <p className="text-lg md:text-xl max-w-2xl text-muted-foreground/80">
-          Selamat datang ke pusat kecemerlangan sains data terunggul di Malaysia. Berbeza dengan platform tekaan rawak tradisional, Ramalan 4D Datochai memanfaatkan kuasa pengkomputeran berprestasi tinggi untuk merungkai corak tersembunyi di sebalik siri nombor. Model AI kami memproses jutaan kombinasi cabutan dari pangkalan data sejarah melebihi sepuluh tahun untuk menghasilkan carta ramalan yang mempunyai nilai kebarangkalian tertinggi. Kepakaran sains data kami mengubah industri 4D ramalan daripada seka dar permainan nasib kepada simulasi statistik empirikal. Sertai ribuan pengguna yang kini menggunakan Datochai 4d sebagai kompas rujukan utama mereka setiap hari cabutan.
-        </p>
-        <div className="flex flex-col sm:flex-row sm:space-x-4 justify-center mt-8">
-          <a href="#/predictions" className="btn-gold flex-1 sm:flex-nowrap">
-            Lihat Ramalan Hari Ini
-          </a>
-          <a href="#/lottery" className="btn-gold-outline flex-1 sm:flex-nowrap">
-            Pilih Loteri Anda
-          </a>
-        </div>
-
-        {/* Skeleton loader for Hero */}
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-2xl">
-          <div className="flex flex-col items-center space-y-4">
-            <div className="w-[60vh] h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent animate-pulse-slow"></div>
-            <div className="flex space-x-4">
-              <div className="w-24 h-2 bg-white/30 dark:bg-white/20 rounded-full animate-pulse-slow"></div>
-              <div className="w-24 h-2 bg-white/30 dark:bg-white/20 rounded-full animate-pulse-slow"></div>
-            </div>
-          </div>
-        </div>
+      <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-white/60">
+        <ChevronDown className="h-6 w-6 animate-bounce" />
       </div>
     </section>
   );

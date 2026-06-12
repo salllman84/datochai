@@ -1,5 +1,3 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 // Sample historical accuracy data
@@ -31,7 +29,7 @@ export function PredictionHistory() {
             </div>
             <div className="flex justify-between text-sm font-medium">
               <span>Tarikan 2 Hari Lepas:</span>
-              <span className="text-muted-foreground/60">4D: 9012</span
+              <span className="text-muted-foreground/60">4D: 9012</span>
             </div>
           </div>
 
@@ -66,7 +64,7 @@ export function PredictionHistory() {
                   strokeWidth={2}
                   dot={false}
                 >
-                  <Dot
+                  <circle cx={0} cy={0}
                     r={4}
                     fill="#D4AF37"
                   />

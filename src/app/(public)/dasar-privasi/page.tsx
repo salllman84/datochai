@@ -1,12 +1,7 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
 export default function PrivacyPolicyPage()
 {
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-background">
         <section className="py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -111,7 +106,6 @@ export default function PrivacyPolicyPage()
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

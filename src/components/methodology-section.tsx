@@ -1,5 +1,5 @@
-import { clsx } from 'clsx';
-import { TwMerge } from '@/lib/tw-merge';
+'use client';
+
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
