@@ -265,3 +265,12 @@
 .bg-gradient-text {
   @apply bg-gradient-to-r from-forest-700 via-gold-500 to-forest-700 bg-clip-text text-transparent;
 }
+/* Make TipTap Tables Responsive on Mobile */
+.ProseMirror table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.ProseMirror img.align-left { float: left; margin-right: 1rem; }
+.ProseMirror img.align-right { float: right; margin-left: 1rem; }
+.ProseMirror img.align-center { margin-left: auto; margin-right: auto; display: block; }
